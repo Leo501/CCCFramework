@@ -1,4 +1,5 @@
 const {ccclass, property} = cc._decorator;
+import cocosHelp = require('../Utils/UIKiller/cocos-help');
 
 @ccclass
 export default class Helloworld extends cc.Component {
