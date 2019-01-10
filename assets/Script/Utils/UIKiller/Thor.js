@@ -42,4 +42,4 @@ let uikiller = require('./uikiller');
     }
 });
 
-window.Thor = module.exports = Thor;
+cc.Thor = module.exports = Thor;
