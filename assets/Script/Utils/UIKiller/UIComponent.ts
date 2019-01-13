@@ -6,9 +6,52 @@ const DEFAULT_EVENT_NAMES = [
     '_onTouchCancel',
 ];
 
-export class UIHelper {
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export class UIComponent extends cc.Component {
+
+    @property(cc.Boolean)
+    public debug = false
+
+    //是否绑定
+    private _bindHammer: boolean = false
+    //
     private _prefix: string = '_';
     private _plugins: any[] = [];
+    public debugInfo: Object = null;
+
+    ctor() {
+        console.log('ctor');
+    }
+
+    __preload() {
+        console.log('__preload');
+        this.bindHammer();
+    }
+
+    getOptions() {
+        return {
+            debug: this.debug
+        }
+    }
+
+    bindHammer() {
+        if (this._bindHammer) {
+            return;
+        }
+        if (!CC_EDITOR) {
+            this._bindHammer = true;
+        }
+        let start = Date.now();
+        let options = this.getOptions();
+
+        this.bindComponent(this, options);
+        if (this.debugInfo) {
+            let duration = Date.now() - start;
+            cc.log(`bindComponent ${this.node.name} duration ${duration}`);
+        }
+    }
 
     public registerPlugin(plugins) {
         if (!Array.isArray(plugins)) {
@@ -34,7 +77,7 @@ export class UIHelper {
      * 获取组件名字
      * @param {cc.Component} component 
      */
-    _getComponentName(component: cc.Component):string {
+    _getComponentName(component: cc.Component): string {
         return component.name.match(/<.*>$/)[0].slice(1, -1);
     }
 
@@ -43,8 +86,8 @@ export class UIHelper {
      * @param {cc.Component} component  要绑定的组件 
      * @param {Object} options          绑定选项
      */
-    public bindComponent(component: cc.Component, options) {
-        component[$options] = options || {};
+    public bindComponent(component: cc.Component, options: Object) {
+        component.$options = options || {};
 
         let root: cc.Node = component.node;
         root._components.forEach((nodeComponent) => {
@@ -132,7 +175,7 @@ export class UIHelper {
      * @param {String} event 
      */
     _getTouchEventName(node: cc.Node, event: string) {
-        let name = node[$eventName] || node.name;
+        let name = node.$eventName || node.name;
         if (name) {
             name = name[this._prefix.length].toUpperCase() + name.slice(this._prefix.length + 1);
         }
@@ -186,7 +229,7 @@ export class UIHelper {
         const eventName = this._getTouchEventName(node, 'TouchLong')[0];
         const touchLong = target[eventName];
         //如果没有事件，返回
-        if (!UIHelper.isFunction(touchLong)) {
+        if (!UIComponent.isFunction(touchLong)) {
             return;
         }
 
@@ -213,14 +256,14 @@ export class UIHelper {
      * @param {cc.Node} nodeObject 
      * @param {Object} target 
      */
-    _bindNode(nodeObject:cc.Node, target:cc.Component) {
+    _bindNode(nodeObject: cc.Node, target: cc.Component) {
         const node = nodeObject;
         let isBindNode = false;
         //绑定组件到自身node节点上
         if (node.name[0] === this._prefix) {
             node._components.forEach((component) => {
                 let name = this._getComponentName(component);
-                
+
                 name = `$${name}`;
                 if (node[name] && target.$options.debug) {
                     cc.warn(`${name} property is already exists`);
@@ -229,11 +272,11 @@ export class UIHelper {
 
                 node[name] = component;
                 //检查组件 onBind 函数,通知组件,target 对象在绑定自己
-                if (UIHelper.isFunction(component.onBind)) {
+                if (UIComponent.isFunction(component.onBind)) {
                     component.onBind(target);
                 }
-                
-                if (component instanceof Thor) {
+
+                if (component instanceof UIComponent) {
                     //判定是否将要自行绑定的节点
                     if (!isBindNode && component !== target) {
                         isBindNode = true;
@@ -248,10 +291,10 @@ export class UIHelper {
 
         //执行插件
         let bool = this._checkNodeByPlugins(node, target);
-        if (!bool || isBindNode) {
+        if (bool || isBindNode) {
             return;
         }
-        
+
         node.children.forEach((child) => {
             let name = child.name;
             if (name[0] === this._prefix) {
@@ -271,7 +314,7 @@ export class UIHelper {
                     cc.warn(`${target.name}.${name} property is already exists`);
                     return;
                 }
-                this._bindTouchEvent(child, target);
+                this._bindTouchEvent(child, target, null);
 
                 target[name] = child;
 
@@ -286,6 +329,23 @@ export class UIHelper {
 
             this._bindNode(child, target);
         });
+    }
+
+    /**
+     * 拿所有插件去检查node 节点, onCheckNode返回为 false 的,此节点将不被绑定
+     * @param node
+     * @param target
+     * @returns {boolean}
+     * @private
+     */
+    _checkNodeByPlugins(node, target) {
+        for (let i = 0; i < this._plugins.length; i++) {
+            let item = this._plugins[i];
+            if (item.onCheckNode && item.onCheckNode(node, target) === false) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
