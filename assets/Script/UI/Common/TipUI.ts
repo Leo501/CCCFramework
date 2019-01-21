@@ -12,7 +12,7 @@ export default class TipUI extends UIComponent {
     start() {
         console.log('start =', this);
         const label: cc.Label = this._tipLabel.$Label;
-        label.string='hello'
+        label.string='hello CCCFramework'
     }
 
     // update (dt) {}

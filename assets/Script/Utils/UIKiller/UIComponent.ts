@@ -18,7 +18,7 @@ export class UIComponent extends cc.Component {
     private _bindHammer: boolean = false
     //
     private _prefix: string = '_';
-    private _plugins: any[] = [];
+    private static _plugins: any[] = [];
     public debugInfo: Object = null;
 
     ctor() {
@@ -53,20 +53,20 @@ export class UIComponent extends cc.Component {
         }
     }
 
-    public registerPlugin(plugins) {
+    public static registerPlugin(plugins) {
         if (!Array.isArray(plugins)) {
             plugins = [plugins];
         }
 
         plugins.forEach((plugin) => {
             //插件能不重复
-            let idx = this._plugins.indexOf(plugin);
+            let idx = UIComponent._plugins.indexOf(plugin);
             if (idx != -1) {
                 return;
             }
 
             //执行插件注册事件
-            this._plugins.push(plugin);
+            UIComponent._plugins.push(plugin);
             if (plugin.onRegister) {
                 plugin.onRegister();
             }
@@ -199,7 +199,7 @@ export class UIComponent extends cc.Component {
      * @private
      */
     _beforeHandleEventByPlugins(node: cc.Node, event: any, hasEventFunc: boolean) {
-        this._plugins.forEach((item) => {
+        UIComponent._plugins.forEach((item) => {
             if (item.onBeforeHandleEvent) {
                 item.onBeforeHandleEvent(node, event, hasEventFunc);
             }
@@ -213,7 +213,7 @@ export class UIComponent extends cc.Component {
      * @private
      */
     _afterHandleEventByPlugins(node: cc.Node, event: any, hasEventFunc: boolean, eventResult: any) {
-        this._plugins.forEach((item) => {
+        UIComponent._plugins.forEach((item) => {
             if (item.onAfterHandleEvent) {
                 item.onAfterHandleEvent(node, event, hasEventFunc, eventResult);
             }
@@ -339,8 +339,8 @@ export class UIComponent extends cc.Component {
      * @private
      */
     _checkNodeByPlugins(node, target) {
-        for (let i = 0; i < this._plugins.length; i++) {
-            let item = this._plugins[i];
+        for (let i = 0; i < UIComponent._plugins.length; i++) {
+            let item = UIComponent._plugins[i];
             if (item.onCheckNode && item.onCheckNode(node, target) === false) {
                 return true;
             }
