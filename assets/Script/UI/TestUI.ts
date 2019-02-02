@@ -2,6 +2,7 @@
 
 const { ccclass, property } = cc._decorator;
 import { UIComponent } from "../Utils/UIKiller/UIComponent";
+import { TipManager } from "../Manage/TipManager";
 
 @ccclass
 export default class NewClass extends UIComponent {
@@ -15,13 +16,17 @@ export default class NewClass extends UIComponent {
     }
 
     start() {
-
+         
+        // TipManager.getInstance().create("Test Tip");
+        console.log('Test UI start');
     }
 
     _onTestTouchEnd() {
         console.log('hello Test');
         this.aabb++;
         this._tip.$Label.string = this.aabb;
+        TipManager.getInstance().create("Test Tip");
+
     }
 
     // update (dt) {}

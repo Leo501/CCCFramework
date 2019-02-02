@@ -1,5 +1,4 @@
-const {ccclass, property} = cc._decorator;
-import cocosHelp = require('../Utils/UIKiller/cocos-help');
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Helloworld extends cc.Component {
@@ -10,8 +9,10 @@ export default class Helloworld extends cc.Component {
     @property
     text: string = 'hello';
 
-    start () {
+    start() {
         // init logic
         this.label.string = this.text;
+
+       
     }
 }
