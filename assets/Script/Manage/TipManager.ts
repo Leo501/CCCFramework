@@ -1,6 +1,3 @@
-import TipUI from "../UI/Common/TipUI";
-
-
 
 export class TipManager {
 
@@ -9,6 +6,7 @@ export class TipManager {
     private prefab: cc.Prefab = null;
     private prefabPath: string = "";
     private name: string = "TipUI";
+    private queue: Array<string> = [];
 
     public static getInstance(): TipManager {
         if (this.instance == null) {
@@ -36,16 +34,38 @@ export class TipManager {
         return p;
     }
 
-    public putNode(node: cc.Node) {
-        this.pool.put(node);
-    }
-
-    public async create(str) {
+    /**
+     * 创建
+     * @param str 
+     */
+    public async create(str: string) {
         console.log('TipManager');
-        let node: cc.Node = null;
         if (this.prefab == null) {
             this.prefab = await this.getPrefab(this.prefabPath);
         }
+        this.queue.push(str);
+        //进入队列
+        if (this.queue.length > 1) {
+            return null;
+        }
+        this.initTip(str);
+        return null;
+    }
+
+    /**
+     * 回收
+     * @param node 
+     */
+    public putNode(node: cc.Node) {
+        this.pool.put(node);
+        this.queue.shift();
+        if (this.queue.length == 0) return;
+        let nextStr = this.queue[0];
+        this.initTip(nextStr);
+    }
+
+    private initTip(str) {
+        let node: cc.Node = null;
         if (this.pool.size() == 0) {
             node = cc.instantiate(this.prefab);
         } else {
@@ -53,8 +73,6 @@ export class TipManager {
         }
         let script = node.getComponent(this.name);
         script.show(str);
-
-        return script;
     }
 
 }

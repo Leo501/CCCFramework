@@ -1,5 +1,4 @@
 
-
 const { ccclass, property } = cc._decorator;
 import { UIComponent } from "../Utils/UIKiller/UIComponent";
 import { TipManager } from "../Manage/TipManager";
@@ -16,7 +15,7 @@ export default class NewClass extends UIComponent {
     }
 
     start() {
-         
+
         // TipManager.getInstance().create("Test Tip");
         console.log('Test UI start');
     }
@@ -25,7 +24,7 @@ export default class NewClass extends UIComponent {
         console.log('hello Test');
         this.aabb++;
         this._tip.$Label.string = this.aabb;
-        TipManager.getInstance().create("Test Tip");
+        TipManager.getInstance().create("Test Tip" + this.aabb);
 
     }
 
