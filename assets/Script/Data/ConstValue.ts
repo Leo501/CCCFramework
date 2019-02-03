@@ -7,6 +7,6 @@ export class ConstValue {
     public static readonly ANGRY_TIME = 30;
     public static readonly ANGRY_UPDATE_INTERVAL = 3;
     public static readonly OFFLINE_UPDATE_INTERVAL = 10;
-    public static readonly BTN_CLICK = "click_Btn.mp3";
+    public static readonly BTN_CLICK = "click_Btn";
 
 }
