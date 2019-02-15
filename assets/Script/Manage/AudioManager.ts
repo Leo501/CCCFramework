@@ -1,7 +1,7 @@
 import { ConstValue } from "../Data/ConstValue";
 
-export class AudioManager {
-    private static instance: AudioManager = null;
+export class AudioMgr {
+    private static instance: AudioMgr = null;
 
     private bgm: string = "";
 
@@ -11,9 +11,9 @@ export class AudioManager {
 
     private _soundVolume: number = 0.5;
 
-    public static getInstance(): AudioManager {
+    public static Instance(): AudioMgr {
         if (this.instance == null) {
-            this.instance = new AudioManager();
+            this.instance = new AudioMgr();
             this.instance.init();
         }
         return this.instance;

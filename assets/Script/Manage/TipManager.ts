@@ -1,22 +1,21 @@
 
-export class TipManager {
+export class TipMgr {
 
-    private static instance: TipManager = null;
+    private static instance: TipMgr = null;
     private pool: cc.NodePool = null;
     private prefab: cc.Prefab = null;
     private prefabPath: string = "";
     private name: string = "TipUI";
     private queue: Array<string> = [];
 
-    public static getInstance(): TipManager {
+    public static Instance(): TipMgr {
         if (this.instance == null) {
-            this.instance = new TipManager();
-            this.instance.init();
+            this.instance = new TipMgr();
         }
         return this.instance;
     }
 
-    private init() {
+    constructor() {
         this.prefabPath = "prefab/common/Tip";
         this.pool = new cc.NodePool(this.name);
     }
@@ -39,7 +38,7 @@ export class TipManager {
      * @param str 
      */
     public async create(str: string) {
-        console.log('TipManager');
+        // console.log('TipMgr');
         if (this.prefab == null) {
             this.prefab = await this.getPrefab(this.prefabPath);
         }

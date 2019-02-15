@@ -1,7 +1,7 @@
 
 const { ccclass, property } = cc._decorator;
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
-import { TipManager } from "../../Manage/TipManager";
+import { TipMgr } from "../../Manage/TipManager";
 
 @ccclass
 export default class TipUI extends UIComponent {
@@ -31,7 +31,7 @@ export default class TipUI extends UIComponent {
     action() {
         let delayTime = this.data.delayTime || 3
         this.node.runAction(cc.sequence(cc.fadeIn(0.26), cc.delayTime(delayTime), cc.fadeOut(0.52), cc.callFunc(() => {
-            TipManager.getInstance().putNode(this.node);
+            TipMgr.Instance().putNode(this.node);
         })));
     }
 

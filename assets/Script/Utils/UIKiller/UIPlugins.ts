@@ -1,4 +1,4 @@
-import { AudioManager } from "../../Manage/AudioManager";
+import { AudioMgr } from "../../Manage/AudioManager";
 import { ConstValue } from "../../Data/ConstValue";
 import { UIComponent } from "./UIComponent";
 
@@ -15,7 +15,7 @@ const UIKillerTouchSound = {
         if (event.type !== cc.Node.EventType.TOUCH_END || eventResult === false) {
             return;
         }
-        AudioManager.getInstance().playSound(ConstValue.BTN_CLICK);
+        AudioMgr.Instance().playSound(ConstValue.BTN_CLICK);
     }
 };
 console.log('UIPlugins');
