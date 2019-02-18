@@ -1,7 +1,9 @@
+import BaseUI from "../Utils/UIKiller/BaseUI";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Helloworld extends cc.Component {
+export default class Helloworld extends BaseUI {
 
     @property(cc.Label)
     label: cc.Label = null;
@@ -11,8 +13,10 @@ export default class Helloworld extends cc.Component {
 
     start() {
         // init logic
-        this.label.string = this.text;
+        // this.label.string = this.text;
+    }
 
-       
+    registerEvent() {
+        console.log("Hello world");
     }
 }

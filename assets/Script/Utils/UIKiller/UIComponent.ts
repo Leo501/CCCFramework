@@ -1,3 +1,4 @@
+import BaseUI from "./BaseUI";
 
 const DEFAULT_EVENT_NAMES = [
     '_onTouchStart',
@@ -9,10 +10,10 @@ const DEFAULT_EVENT_NAMES = [
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export class UIComponent extends cc.Component {
+export class UIComponent extends BaseUI {
 
-    @property(cc.Boolean)
-    public debug = false
+    // @property(cc.Boolean)
+    // public debug = false
 
     //是否绑定
     private _bindHammer: boolean = false
@@ -21,12 +22,7 @@ export class UIComponent extends cc.Component {
     private static _plugins: any[] = [];
     public debugInfo: Object = null;
 
-    ctor() {
-        console.log('ctor');
-    }
-
     __preload() {
-        console.log('__preload');
         this.bindHammer();
     }
 
