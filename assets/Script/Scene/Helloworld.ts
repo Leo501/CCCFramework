@@ -1,19 +1,19 @@
-import BaseUI from "../Utils/UIKiller/BaseUI";
+import BaseUI, { EnumUIDir } from "../Utils/UIKiller/BaseUI";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Helloworld extends BaseUI {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    protected static className = "Helloworld";
 
-    @property
-    text: string = 'hello';
+    protected static uiDir = EnumUIDir.none;
 
     start() {
-        // init logic
-        // this.label.string = this.text;
+    }
+
+    onEnable() {
+        console.log('onEnable helloworld');
     }
 
     registerEvent() {
