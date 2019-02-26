@@ -72,6 +72,6 @@ export default class BaseUI extends cc.Component {
     }
 
     hide(type: UIHideType) {
-
+        console.log(type);
     }
 }

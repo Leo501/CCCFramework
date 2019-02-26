@@ -19,7 +19,7 @@ export default class TipUI extends UIComponent {
         this.node.opacity = 0;
         label.string = data.string;
         let size = cc.view.getCanvasSize();
-        this.node.y = -size.height * 0.5;
+        this.node.y = -size.height * 0.25;
     }
 
     show(str: string) {

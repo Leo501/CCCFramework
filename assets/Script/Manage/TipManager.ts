@@ -21,8 +21,10 @@ export class TipMgr {
     }
 
     private getPrefab(url): Promise<cc.Prefab> {
+        console.log('getPrefab');
         let p = new Promise<cc.Prefab>((resolve, reject) => {
             cc.loader.loadRes(url, (e, prefab) => {
+                console.log('loadRes');
                 if (e) {
                     reject(e);
                 } else {
@@ -38,7 +40,7 @@ export class TipMgr {
      * @param str 
      */
     public async create(str: string) {
-        // console.log('TipMgr');
+        console.log('TipMgr');
         if (this.prefab == null) {
             this.prefab = await this.getPrefab(this.prefabPath);
         }

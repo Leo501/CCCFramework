@@ -1,5 +1,6 @@
 import BaseUI, { EnumUIDir } from "../Utils/UIKiller/BaseUI";
 import Sequence from "../Utils/Action/Sequence";
+import { TipMgr } from "../Manage/TipManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -17,6 +18,12 @@ export default class Helloworld extends BaseUI {
             console.log('hello', this);
         }).action();
         this.node.runAction(action);
+        let testMap = new Map<string, number>();
+        testMap.set('a', 1);
+        testMap.set('b', 2);
+        testMap.forEach((value, key) => {
+            TipMgr.Instance().create(`value=${value},key=${key}`);
+        });
     }
 
     onEnable() {
