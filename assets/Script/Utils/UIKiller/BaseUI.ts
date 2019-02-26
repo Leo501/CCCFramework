@@ -39,6 +39,10 @@ export default class BaseUI extends cc.Component {
         this.mTag = value;
     }
 
+    public static getClassName() {
+        return this.className;
+    }
+
     public static getUrl(): string {
         cc.log(this.className);
         return ConstValue.PREFAB_UI_DIR + this.uiDir + "/" + this.className;

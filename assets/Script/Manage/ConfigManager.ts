@@ -1,4 +1,4 @@
-import { BaseConfigContainer, ConfigContainerClass } from "../Cofing/BaseConfigContainer";
+import { BaseConfigContainer, ConfigContainerClass } from "../Config/BaseConfigContainer";
 
 
 export default class ConfigMgr {

@@ -6,6 +6,7 @@ import { TipMgr } from "../../Manage/TipManager";
 @ccclass
 export default class TipUI extends UIComponent {
 
+    protected static className = "TipUI";
     private data: any = {};
 
     onEnable() {
