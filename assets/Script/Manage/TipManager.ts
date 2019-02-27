@@ -1,3 +1,4 @@
+import { resGetPrefab } from "./ResManager";
 
 export class TipMgr {
 
@@ -20,21 +21,6 @@ export class TipMgr {
         this.pool = new cc.NodePool(this.name);
     }
 
-    private getPrefab(url): Promise<cc.Prefab> {
-        console.log('getPrefab');
-        let p = new Promise<cc.Prefab>((resolve, reject) => {
-            cc.loader.loadRes(url, (e, prefab) => {
-                console.log('loadRes');
-                if (e) {
-                    reject(e);
-                } else {
-                    resolve(prefab);
-                }
-            });
-        });
-        return p;
-    }
-
     /**
      * 创建
      * @param str 
@@ -42,7 +28,8 @@ export class TipMgr {
     public async create(str: string) {
         console.log('TipMgr');
         if (this.prefab == null) {
-            this.prefab = await this.getPrefab(this.prefabPath);
+            this.prefab=await resGetPrefab(this.prefabPath);
+            // this.prefab = await this.getPrefab(this.prefabPath);
         }
         this.queue.push(str);
         //进入队列

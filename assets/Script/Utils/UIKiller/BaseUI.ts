@@ -20,6 +20,7 @@ export enum EnumUIDir {
 export interface UIClass<T extends BaseUI> {
     new(): T;
     getUrl(): string;
+    getClassName():string;
 }
 
 @ccclass
@@ -46,6 +47,10 @@ export default class BaseUI extends cc.Component {
     public static getUrl(): string {
         cc.log(this.className);
         return ConstValue.PREFAB_UI_DIR + this.uiDir + "/" + this.className;
+    }
+
+    init(data){
+        this.data=data;
     }
 
     /**
