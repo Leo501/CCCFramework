@@ -3,6 +3,10 @@
 
 export default class Sequence {
 
+    public static create(): Sequence {
+        return new Sequence();
+    }
+
     private sequenArr: cc.FiniteTimeAction[] = [];
 
     /**

@@ -23,7 +23,7 @@ export default class TipUI extends UIComponent {
         this.node.y = -size.height * 0.25;
     }
 
-    show(str: string) {
+    showInfo(str: string) {
         this.data.string = str;
         let parent = cc.find('Canvas');
         parent.addChild(this.node);

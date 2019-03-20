@@ -13,9 +13,9 @@ export default class Helloworld extends BaseUI {
 
     start() {
 
-        let sequ = new Sequence();
+        let sequ = Sequence.create();
         let action: cc.ActionInterval = sequ.delay(5).event(() => {
-            console.log('hello', this);
+            TipMgr.Instance().create("hello sequence");
         }).action();
         this.node.runAction(action);
         let testMap = new Map<string, number>();

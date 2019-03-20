@@ -2,6 +2,11 @@
 
 
 export default class Spawn {
+
+    public static create(): Spawn {
+        return new Spawn();
+    }
+
     private spawnArr: cc.FiniteTimeAction[] = [];
 
     public delay(time: number): Spawn {

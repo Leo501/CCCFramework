@@ -27,14 +27,13 @@ export class TipMgr {
      */
     public async create(str: string) {
         console.log('TipMgr');
-        if (this.prefab == null) {
-            this.prefab=await resGetPrefab(this.prefabPath);
-            // this.prefab = await this.getPrefab(this.prefabPath);
-        }
         this.queue.push(str);
         //进入队列
         if (this.queue.length > 1) {
             return null;
+        }
+        if (this.prefab == null) {
+            this.prefab = await resGetPrefab(this.prefabPath);
         }
         this.initTip(str);
         return null;
@@ -60,7 +59,7 @@ export class TipMgr {
             node = this.pool.get();
         }
         let script = node.getComponent(this.name);
-        script.show(str);
+        script.showInfo(str);
     }
 
 }
