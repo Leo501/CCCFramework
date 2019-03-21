@@ -76,11 +76,11 @@ export default class BaseUI extends cc.Component {
         this.unregisternEvent();
     }
 
-    show(type: UIShowType) {
+    onShow(type: UIShowType) {
         console.log(type);
     }
 
-    hide(type: UIHideType) {
+    onHide(type: UIHideType) {
         console.log(type);
     }
 }
