@@ -1,7 +1,7 @@
-import BaseUI, { UIClass, UIShowType } from "../Utils/UIKiller/BaseUI";
+import BaseUI, { UIClass, UIShowType, UIHideType } from "../Utils/UIKiller/BaseUI";
 import { resGetPrefab } from "./ResManager";
 import { TipMgr } from "./TipManager";
-import { isArrayLike } from "mobx";
+import { PoolPlugin } from "../Utils/UIKiller/PoolPlugin";
 
 export enum UILevel {
     AlwayBottom = -3, //如果不想区分太复杂那最底层的UI请使用这个
@@ -19,8 +19,7 @@ export enum UILevel {
 
 export class UIMgr {
     private static instance: UIMgr = null;
-    private uiList: BaseUI[] = [];
-    private uiMap: Map<string, BaseUI> = new Map<string, BaseUI>();
+    private uiMap: Map<string, PoolPlugin> = new Map<string, PoolPlugin>();
     private uiStack = [];
     private uiRoot: cc.Node = null;
     private uiBg: cc.Node = null;
@@ -38,89 +37,36 @@ export class UIMgr {
     }
 
     public openUI<T extends BaseUI>(uiClass: UIClass<T>, uiShow: UIShowType, data?: any) {
-        let className = uiClass.getClassName();
-        let ui = this.getUI(className);
-        if (ui) {
-            ui.node.active = true;
-            this.UIInitAndShow(ui, uiShow, data);
-            this.clearUIStackAndSetFirst(ui);
-            return;
-        }
-        this.loadPrefab(uiClass.getUrl()).then((prefab) => {
-            if (this.getUI(className)) {
-                return null;
-            }
-            let node = cc.instantiate(prefab);
-            this.uiRoot.addChild(node);
-            let ui = node.getComponent(uiClass) as BaseUI;
-            ui.tag = uiClass;
-            this.uiMap.set(className, ui);
-            this.UIInitAndShow(ui, uiShow, data);
-            this.clearUIStackAndSetFirst(ui);
-        }).catch((err) => {
-            TipMgr.Instance().create(`加载${className}失败`);
-        });
+        let ui = this.getUI(uiClass, uiShow, data);
+        ui && this.UIInitAndShow(ui, uiShow, data);
     }
 
-    public closeUI<T extends BaseUI>(uiClass: UIClass<T>, isClear) {
-        this.uiStack.pop();
-        let className = uiClass.getClassName();
-        let ui = this.getUI(className);
-        if (isClear) {
-            this.uiMap.delete(className);
-            ui && ui.node.destroy();
+    public closeUI<T extends BaseUI>(node: UIClass<T> | cc.Node) {
+        if (node instanceof cc.Node) {
+            this.putUI((child) => {
+                if (node == child) {
+                    let className = child.ui.getClassName();
+                    this.uiMap[className].pushNode(child);
+                    // break;
+                }
+            });
         } else {
-            ui && ui.node.removeFromParent();
+            let className = node.getClassName();
+            this.putUI((child) => {
+                if (className == child.ui.getClassName()) {
+                    this.uiMap[className].pushNode(child);
+                }
+            });
         }
-    }
-
-    public pushUI<T extends BaseUI>(uiClass: UIClass<T>, uiShow: UIShowType, data?: any) {
-        let className = uiClass.getClassName();
-        let ui = this.getUI(className);
-        if (ui) {
-            let lastUI = this.uiStack[this.uiStack.length];
-            this.hideUI(lastUI);
-            ui.node.active = true;
-            this.UIInitAndShow(ui, uiShow, data);
-            this.uiStack.push(ui);
-            return;
-        }
-        this.loadPrefab(uiClass.getUrl()).then((prefab) => {
-            if (this.getUI(className)) {
-                return null;
-            }
-            let node = cc.instantiate(prefab);
-            this.uiBg.active = true;
-            let lastUI = this.uiStack[this.uiStack.length];
-            this.hideUI(lastUI);
-            this.uiRoot.addChild(node);
-            let ui = node.getComponent(uiClass) as BaseUI;
-            ui.tag = uiClass;
-            this.UIInitAndShow(ui, uiShow, data);
-            this.uiStack.push(ui);
-        }).catch((err) => {
-            TipMgr.Instance().create("加载Prefab 失败");
-        });
-    }
-
-    public backUI(isClear = false) {
-        let ui = this.uiStack.pop();
-        if (isClear) {
-            this.uiMap.delete(ui.getClassName());
-            ui && ui.node.destroy();
-        } else {
-            ui && ui.node.removeFromParent();
-        }
-        ui = this.uiStack[this.uiStack.length - 1];
-        ui.node.active = true;
     }
 
     public clearAllUI() {
-        this.uiMap.forEach(ui => {
-            ui && ui.node.destroy();
+        this.putUI((child) => {
+            if (child != this.uiBg) {
+                let className = child.ui.getClassName();
+                this.uiMap[className].pushNode(child);
+            }
         });
-        this.uiMap.clear();
-        this.uiStack.length = 0;
     }
 
     private async loadPrefab(url) {
@@ -132,25 +78,43 @@ export class UIMgr {
         ui.node.active = true;
         data && ui.init(data);
         this.uiBg.active = true;
-        ui.show(uiShow);
+        ui.onShow(uiShow);
     }
 
-    private getUI<T extends BaseUI>(uiClass: string): BaseUI {
-        return this.uiMap.get(uiClass) || null;
+    private hideUI(ui: BaseUI, uiHide: UIHideType = UIHideType.none) {
+        ui && ui.onHide(uiHide);
     }
 
-    private hideUI(ui: BaseUI) {
-        ui && (ui.node.active = false);
-    }
+    private getUI<T extends BaseUI>(uiClass: UIClass<T>, uiShow: UIShowType, data?: any): BaseUI {
+        let className = uiClass.getClassName();
+        let uiPath = uiClass.getUrl();
 
-    private clearUIStackAndSetFirst<T extends BaseUI>(ui: T) {
-        if (this.uiStack.length != 0) {
-            this.uiStack.forEach((ui) => {
-                ui && ui.node.removeFromParent();
+        if (!this.uiMap.get(className)) {
+            this.loadPrefab(uiPath).then((prefab) => {
+                if (this.uiMap.get(className)) {
+                    return null;
+                }
+                this.uiMap[className] = new PoolPlugin({
+                    name: className,
+                    prefab: prefab
+                });
+                let node = this.uiMap[className].getNode();
+                let ui = node.getComponent(className);
+                this.UIInitAndShow(ui, uiShow, data);
+            }).catch((err) => {
+                TipMgr.Instance().create(`加载${className}失败`);
             });
         }
-        this.uiStack.length = 0;
-        this.uiStack.push(ui);
+        return this.uiMap.get(className) || null;
     }
+
+    private putUI(fn: Function) {
+        let children = this.uiRoot.children;
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            fn(child);
+        }
+    }
+
 }
 
