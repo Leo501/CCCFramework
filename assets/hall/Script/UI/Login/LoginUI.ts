@@ -1,5 +1,7 @@
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
-import { EnumUIPath } from "../../Utils/UIKiller/BaseUI";
+import { EnumUIPath, UIShowType } from "../../Utils/UIKiller/BaseUI";
+import { UIMgr } from "../../Manage/UIManager";
+import { TipBoxUI } from "../Common/TipBoxUI";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,6 +17,7 @@ export default class LoginUI extends UIComponent {
 
     _onWeixinTouchEnd(event) {
         console.log("_onWeixinTouchEnd", event);
+        UIMgr.Instance().openUI(TipBoxUI, UIShowType.none);
     }
 
     _onAgreeToggleEnd(event) {

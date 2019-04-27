@@ -42,9 +42,9 @@ export default class TipBoxMgr {
     }
 
     /**
-  * 回收
-  * @param node 
-  */
+     * 回收
+     * @param node 
+     */
     public putNode(node: cc.Node) {
         this.pool.put(node);
         this.queue.shift();

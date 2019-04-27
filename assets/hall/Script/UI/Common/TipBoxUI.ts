@@ -1,6 +1,7 @@
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
 import { EnumUIPath } from "../../Utils/UIKiller/BaseUI";
 import TipBoxMgr from "../../Manage/TipBoxUIManager";
+import { UIMgr } from "../../Manage/UIManager";
 
 
 export enum TipBoxEnum {
@@ -118,7 +119,8 @@ export class TipBoxUI extends UIComponent {
 
     _onOkTouchEnd(event) {
         this.onOk && this.onOk();
-        TipBoxMgr.Instance().putNode(this.node);
+        // TipBoxMgr.Instance().putNode(this.node);
+        UIMgr.Instance().closeUI(this.node);
     }
 
     // update (dt) {}
