@@ -99,7 +99,33 @@ export class UIComponent extends BaseUI {
     }
 
     /**
-     * 绑定事件
+     * 绑定事件 toggle
+     */
+    _bindToggleEvent(node: cc.Node, target: BaseUI) {
+        let eventName = this._getToggleEventName(node);
+        let toggle: cc.Toggle = node.getComponent(cc.Toggle);
+        if (!target[eventName] || !toggle) {
+            return;
+        }
+        let eventHandler = this.getEventHandler(target.node, target.node.name, eventName);
+        toggle.checkEvents.push(eventHandler);
+        node.on(cc.Node.EventType.TOUCH_END, (event) => {
+            this._afterHandleEventByPlugins(node, event, true, true);
+
+        });
+    }
+
+    _getToggleEventName(node: cc.Node) {
+        let name = node.$eventName || node.name;
+        if (name) {
+            name = name[this._prefix.length].toUpperCase() + name.slice(this._prefix.length + 1);
+        }
+
+        return `_on${name}ToggleEnd`;
+    }
+
+    /**
+     * 绑定事件 botton
      * @param {cc.Node} node
      */
     _bindTouchEvent(node: cc.Node, target: cc.Component, defaultNames: string[]) {
@@ -118,7 +144,7 @@ export class UIComponent extends BaseUI {
 
         eventNames.forEach((eventName, index) => {
             const tempEvent = target[eventName];
-            if (!tempEvent && !node.getComponent(cc.Button)) {
+            if (!tempEvent || !node.getComponent(cc.Button)) {
                 return;
             }
 
@@ -311,6 +337,7 @@ export class UIComponent extends BaseUI {
                     return;
                 }
                 this._bindTouchEvent(child, target, null);
+                this._bindToggleEvent(child, target);
 
                 target[name] = child;
 
@@ -352,5 +379,18 @@ export class UIComponent extends BaseUI {
         return typeof value === 'function';
     }
 
-    // update (dt) {}
+    /**
+     * 
+    * target(cc.Node) 要运行在哪个脚本的this.node节点
+    * component(String) 要运行的component的名称
+    * handler(String) 回调函数的名称 
+     */
+    private getEventHandler(target, component, handler) {
+        var eventHandler = new cc.Component.EventHandler();
+        eventHandler.target = target;
+        eventHandler.component = component;
+        eventHandler.handler = handler;
+        return eventHandler;
+        // update (dt) {}
+    }
 }

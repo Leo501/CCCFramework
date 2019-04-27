@@ -20,7 +20,6 @@ export enum UILevel {
 export class UIMgr {
     private static instance: UIMgr = null;
     private uiMap: Map<string, PoolPlugin> = new Map<string, PoolPlugin>();
-    private uiStack = [];
     private uiRoot: cc.Node = null;
     private uiBg: cc.Node = null;
 

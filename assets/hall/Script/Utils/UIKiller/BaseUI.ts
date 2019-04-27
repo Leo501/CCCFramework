@@ -34,6 +34,8 @@ export default class BaseUI extends cc.Component {
 
     protected mTag: any;
 
+    protected data: any = {};
+
     public get tag(): any {
         return this.mTag;
     }

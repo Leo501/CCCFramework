@@ -7,6 +7,13 @@
     "scheme": "https",
     "skipRecord": false
   },
+  "appBundle": false,
+  "baidugame": {
+    "REMOTE_SERVER_ROOT": "",
+    "appid": "testappid",
+    "orientation": "portrait",
+    "subContext": ""
+  },
   "encryptJs": true,
   "excludeScenes": [],
   "fb-instant-games": {},
@@ -17,18 +24,18 @@
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
   "orientation": {
-    "landscapeLeft": false,
-    "landscapeRight": false,
-    "portrait": true,
-    "upsideDown": true
+    "landscapeLeft": true,
+    "landscapeRight": true,
+    "portrait": false,
+    "upsideDown": false
   },
   "packageName": "org.cocos2d.helloworld",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "startScene": "c2140ae3-ce2d-431d-8e86-6b79117c722a",
-  "title": "hello_world",
+  "startScene": "32cb803c-9dc9-45fb-a98e-3a1fc08a84c1",
+  "title": "hunanjk",
   "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
