@@ -1,4 +1,5 @@
 import { resGetPrefab } from "./ResManager";
+import TipUI from "../UI/Common/TipUI";
 
 export class TipMgr {
 
@@ -17,7 +18,6 @@ export class TipMgr {
     }
 
     constructor() {
-        this.prefabPath = "prefab/common/Tip";
         this.pool = new cc.NodePool(this.name);
     }
 
@@ -33,7 +33,7 @@ export class TipMgr {
             return null;
         }
         if (this.prefab == null) {
-            this.prefab = await resGetPrefab(this.prefabPath);
+            this.prefab = await resGetPrefab(TipUI.getUrl());
         }
         this.initTip(str);
         return null;
@@ -58,8 +58,15 @@ export class TipMgr {
         } else {
             node = this.pool.get();
         }
-        let script = node.getComponent(this.name);
-        script.showInfo(str);
+        let ui = node.getComponent(this.name);
+        ui.init({
+            string: str
+        });
+        this.getRoot().addChild(node);
+    }
+
+    private getRoot(): cc.Node {
+        return cc.find("Canvas/Toast");
     }
 
 }

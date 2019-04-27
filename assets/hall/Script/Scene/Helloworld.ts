@@ -1,4 +1,4 @@
-import BaseUI, { EnumUIDir } from "../Utils/UIKiller/BaseUI";
+import BaseUI, { EnumUIPath } from "../Utils/UIKiller/BaseUI";
 import Sequence from "../Utils/Action/Sequence";
 import { TipMgr } from "../Manage/TipManager";
 
@@ -9,7 +9,7 @@ export default class Helloworld extends BaseUI {
 
     protected static className = "Helloworld";
 
-    protected static uiDir = EnumUIDir.none;
+    protected static uiDir = EnumUIPath.none;
 
     start() {
 

@@ -77,6 +77,7 @@ export class UIMgr {
     private UIInitAndShow(ui: BaseUI, uiShow: UIShowType, data?: any) {
         ui.node.active = true;
         data && ui.init(data);
+        this.uiRoot.addChild(ui.node);
         this.uiBg.active = true;
         ui.onShow(uiShow);
     }

@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Tip",
+    "_name": "TipUI",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -227,6 +227,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -302,6 +303,7 @@
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0,
+    "_N$affectedByScale": false,
     "_id": ""
   },
   {
@@ -323,7 +325,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "debug": false,
     "_id": ""
   },
   {

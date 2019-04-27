@@ -12,14 +12,15 @@ export enum UIHideType {
     scaleOut = 1,
 }
 
-export enum EnumUIDir {
+export enum EnumUIPath {
     none = "",
+    hall = "hall/prefab"
 }
 
 export interface UIClass<T extends BaseUI> {
     new(): T;
     getUrl(): string;
-    getClassName():string;
+    getClassName(): string;
 }
 
 @ccclass
@@ -27,7 +28,9 @@ export default class BaseUI extends cc.Component {
 
     protected static className = "BaseUI";
 
-    protected static uiDir = EnumUIDir.none;
+    protected static uiPath = EnumUIPath.none;
+
+    protected static directory = "common";
 
     protected mTag: any;
 
@@ -45,11 +48,11 @@ export default class BaseUI extends cc.Component {
 
     public static getUrl(): string {
         cc.log(this.className);
-        return ConstValue.PREFAB_UI_DIR + this.uiDir + "/" + this.className;
+        return `${this.uiPath}/${this.directory}/${this.className}`;
     }
 
-    init(data){
-        this.data=data;
+    init(data) {
+
     }
 
     /**
@@ -67,7 +70,7 @@ export default class BaseUI extends cc.Component {
     }
 
     onEnable() {
-        console.log('onEnable');
+        // console.log('onEnable');
         this.registerEvent();
     }
 
