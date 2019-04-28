@@ -20,7 +20,7 @@ export default class LoginScene extends cc.Component {
         data.onOk = () => {
             console.log(this);
         }
-        TipBoxMgr.Instance().create(data);
+        // TipBoxMgr.Instance().create(data);
     }
 
     // update (dt) {}
