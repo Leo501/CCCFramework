@@ -6,15 +6,15 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class LoadingMgr {
 
-    private static instance: LoadingMgr = null;
+    private static instance: LoadingMgr = new LoadingMgr();
     private prefab: cc.Prefab = null;
     private name: string = "LoadingUI";
     private pool: cc.NodePool = null;
 
     public static Instance(): LoadingMgr {
-        if (this.instance == null) {
-            this.instance = new LoadingMgr();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new LoadingMgr();
+        // }
         return this.instance;
     }
 

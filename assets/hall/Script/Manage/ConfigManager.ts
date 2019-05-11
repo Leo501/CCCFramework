@@ -2,14 +2,14 @@ import { BaseConfigContainer, ConfigContainerClass } from "../Config/BaseConfigC
 
 
 export default class ConfigMgr {
-    private static instance: ConfigMgr = null;
+    private static instance: ConfigMgr = new ConfigMgr();
 
     private configContainerList: BaseConfigContainer[] = [];
 
     public static Instance() {
-        if (this.instance == null) {
-            this.instance = new ConfigMgr();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new ConfigMgr();
+        // }
         return this.instance;
     }
 
@@ -30,8 +30,7 @@ export default class ConfigMgr {
         let len = this.configContainerList.length;
         for (let i = 0; i < len; i++) {
             let contailner = this.configContainerList[i];
-            if (contailner.tag == tag)
-            {
+            if (contailner.tag == tag) {
                 this.configContainerList.splice(i);
                 return true;
             }
@@ -39,7 +38,7 @@ export default class ConfigMgr {
         return false;
     }
 
-    public closeAll(){
+    public closeAll() {
         delete this.configContainerList;
     }
 }

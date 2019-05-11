@@ -19,18 +19,18 @@ export default class LoginUI extends UIComponent {
 
     _onWeixinTouchEnd(event) {
         console.log("_onWeixinTouchEnd", event);
-        // UIMgr.Instance().openUI(TipBoxUI, UIShowType.none);
-        LoadingMgr.Instance().close();
+        UIMgr.Instance().openUI(TipBoxUI, UIShowType.none);
+        // LoadingMgr.Instance().close();
     }
 
     _onAgreeToggleEnd(event) {
         console.log("_onToggleEnd", event);
-        LoadingMgr.Instance().create();
+        // LoadingMgr.Instance().create();
 
-        let action = Sequence.create().delay(5).event(() => {
-            LoadingMgr.Instance().close()
-        }).action();
-        this.node.runAction(action);
+        // let action = Sequence.create().delay(5).event(() => {
+        //     LoadingMgr.Instance().close()
+        // }).action();
+        // this.node.runAction(action);
     }
 
     // update (dt) {}

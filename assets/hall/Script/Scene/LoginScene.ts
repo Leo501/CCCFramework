@@ -18,7 +18,6 @@ export default class LoginScene extends cc.Component {
         let data = <TipBoxData>{};
         data.tip = "只是测试";
         data.onOk = () => {
-            console.log(this);
         }
         // TipBoxMgr.Instance().create(data);
     }

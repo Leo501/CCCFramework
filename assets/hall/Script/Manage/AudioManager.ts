@@ -2,7 +2,7 @@ import { ConstValue } from "../Data/ConstValue";
 import { GameInfoModel } from "../Data/GameInfoModel";
 
 export class AudioMgr {
-    private static instance: AudioMgr = null;
+    private static instance: AudioMgr = new AudioMgr();
 
     private bgm: string = "";
 
@@ -13,14 +13,13 @@ export class AudioMgr {
     private _soundVolume: number = 0.5;
 
     public static Instance(): AudioMgr {
-        if (this.instance == null) {
-            this.instance = new AudioMgr();
-            this.instance.init();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new AudioMgr();
+        // }
         return this.instance;
     }
 
-    private init() {
+    constructor() {
         cc.game.on(cc.game.EVENT_HIDE, () => {
             this.pauseAll();
         });
