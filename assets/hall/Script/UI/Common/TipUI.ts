@@ -2,31 +2,28 @@
 const { ccclass, property } = cc._decorator;
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
 import { TipMgr } from "../../Manage/TipManager";
+import { EnumUIPath } from "../../Utils/UIKiller/BaseUI";
 
 @ccclass
 export default class TipUI extends UIComponent {
 
     protected static className = "TipUI";
+    protected static uiPath = EnumUIPath.hall;
+
     private data: any = {};
 
     onEnable() {
-        this.init();
         this.action();
-    }
 
-    init() {
-        let data = this.data;
         const label: cc.Label = this._tipLabel.$Label;
         this.node.opacity = 0;
-        label.string = data.string;
+        label.string = this.data.string;
         let size = cc.view.getCanvasSize();
-        this.node.y = -size.height * 0.25;
+        this.node.y = -size.height * 0.5;
     }
 
-    showInfo(str: string) {
-        this.data.string = str;
-        let parent = cc.find('Canvas');
-        parent.addChild(this.node);
+    init(data) {
+        this.data = data;
     }
 
     action() {

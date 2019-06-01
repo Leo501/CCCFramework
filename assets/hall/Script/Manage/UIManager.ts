@@ -20,11 +20,10 @@ export enum UILevel {
 export class UIMgr {
     private static instance: UIMgr = null;
     private uiMap: Map<string, PoolPlugin> = new Map<string, PoolPlugin>();
-    private uiStack = [];
     private uiRoot: cc.Node = null;
     private uiBg: cc.Node = null;
 
-    public static getInstance() {
+    public static Instance() {
         if (this.instance == null) {
             this.instance = new UIMgr();
         }
@@ -37,24 +36,24 @@ export class UIMgr {
     }
 
     public openUI<T extends BaseUI>(uiClass: UIClass<T>, uiShow: UIShowType, data?: any) {
-        let ui = this.getUI(uiClass, uiShow, data);
-        ui && this.UIInitAndShow(ui, uiShow, data);
+        let node = this.getUI(uiClass, uiShow, data);
+        node && this.UIInitAndShow(node.ui, uiShow, data);
     }
 
     public closeUI<T extends BaseUI>(node: UIClass<T> | cc.Node) {
         if (node instanceof cc.Node) {
             this.putUI((child) => {
                 if (node == child) {
-                    let className = child.ui.getClassName();
-                    this.uiMap[className].pushNode(child);
+                    let className = child.name;
+                    this.uiMap.get(className).pushNode(child);
                     // break;
                 }
             });
         } else {
             let className = node.getClassName();
             this.putUI((child) => {
-                if (className == child.ui.getClassName()) {
-                    this.uiMap[className].pushNode(child);
+                if (className == child.name) {
+                    this.uiMap.get(className).pushNode(child);
                 }
             });
         }
@@ -77,7 +76,8 @@ export class UIMgr {
     private UIInitAndShow(ui: BaseUI, uiShow: UIShowType, data?: any) {
         ui.node.active = true;
         data && ui.init(data);
-        this.uiBg.active = true;
+        this.uiRoot.addChild(ui.node);
+        // this.uiBg.active = true;
         ui.onShow(uiShow);
     }
 
@@ -94,18 +94,20 @@ export class UIMgr {
                 if (this.uiMap.get(className)) {
                     return null;
                 }
-                this.uiMap[className] = new PoolPlugin({
+                let pool = new PoolPlugin({
                     name: className,
                     prefab: prefab
                 });
-                let node = this.uiMap[className].getNode();
+                this.uiMap.set(className, pool);
+                let node = pool.getNode();
                 let ui = node.getComponent(className);
                 this.UIInitAndShow(ui, uiShow, data);
             }).catch((err) => {
                 TipMgr.Instance().create(`加载${className}失败`);
             });
+            return null;
         }
-        return this.uiMap.get(className) || null;
+        return this.uiMap.get(className).getNode();
     }
 
     private putUI(fn: Function) {

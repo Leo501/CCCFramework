@@ -1,4 +1,5 @@
 import { ConstValue } from "../Data/ConstValue";
+import { GameInfoModel } from "../Data/GameInfoModel";
 
 export class AudioMgr {
     private static instance: AudioMgr = null;
@@ -72,7 +73,7 @@ export class AudioMgr {
 
         this.sound = soundName;
 
-        let path = ConstValue.AUDIO_DIR + soundName;
+        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + soundName;
 
         cc.loader.loadRes(path, cc.AudioClip, (err, clip) => {
             if (err) {
@@ -93,7 +94,7 @@ export class AudioMgr {
 
         this.bgm = soundName;
 
-        let path = ConstValue.AUDIO_DIR + soundName;
+        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + soundName;
 
         cc.audioEngine.stopMusic();
 
@@ -108,7 +109,7 @@ export class AudioMgr {
 
     public resumeBGM() {
         cc.audioEngine.stopMusic();
-        let path = ConstValue.AUDIO_DIR + this.bgm;
+        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + this.bgm;
         cc.loader.loadRes(path, cc.AudioClip, (err, clip) => {
             if (err) {
                 cc.error(err);

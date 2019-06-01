@@ -1,18 +1,20 @@
 import { resGetPrefab } from "./ResManager";
-import TipUI from "../UI/Common/TipUI";
+import { TipBoxUI, TipBoxData } from "../UI/Common/TipBoxUI";
 
-export class TipMgr {
+const { ccclass, property } = cc._decorator;
 
-    private static instance: TipMgr = null;
+@ccclass
+export default class TipBoxMgr {
+
+    private static instance: TipBoxMgr = null;
     private pool: cc.NodePool = null;
     private prefab: cc.Prefab = null;
-    private prefabPath: string = "";
-    private name: string = "TipUI";
-    private queue: Array<string> = [];
+    private name: string = "TipBoxUI";
+    private queue: Array<any> = [];
 
-    public static Instance(): TipMgr {
+    public static Instance(): TipBoxMgr {
         if (this.instance == null) {
-            this.instance = new TipMgr();
+            this.instance = new TipBoxMgr();
         }
         return this.instance;
     }
@@ -22,20 +24,20 @@ export class TipMgr {
     }
 
     /**
-     * 创建
-     * @param str 
-     */
-    public async create(str: string) {
+    * 创建
+    * @param str 
+    */
+    public async create(data: TipBoxData) {
         console.log('TipMgr');
-        this.queue.push(str);
+        this.queue.push(data);
         //进入队列
         if (this.queue.length > 1) {
             return null;
         }
         if (this.prefab == null) {
-            this.prefab = await resGetPrefab(TipUI.getUrl());
+            this.prefab = await resGetPrefab(TipBoxUI.getUrl());
         }
-        this.initTip(str);
+        this.initTip(data);
         return null;
     }
 
@@ -51,22 +53,19 @@ export class TipMgr {
         this.initTip(nextStr);
     }
 
-    private initTip(str) {
+    private initTip(data) {
         let node: cc.Node = null;
         if (this.pool.size() == 0) {
             node = cc.instantiate(this.prefab);
         } else {
             node = this.pool.get();
         }
-        let ui = node.getComponent(this.name);
-        ui.init({
-            string: str
-        });
+        let ui: TipBoxUI = node.getComponent(this.name);
+        ui.init(data);
         this.getRoot().addChild(node);
     }
 
     private getRoot(): cc.Node {
-        return cc.find("Canvas/Toast");
+        return cc.find("Canvas/Const");
     }
-
 }
