@@ -15,7 +15,7 @@ export default class NewClass extends BaseUI {
         let opt = {
             path: '/urlInfo.json',
             type: 'GET',
-            url: "http://swxhm.jdy518.com:9001/dajiangshi"
+            url: "---"
         };
         HttpMgr.Instance().request(opt, (data) => {
             console.log('success', data);
