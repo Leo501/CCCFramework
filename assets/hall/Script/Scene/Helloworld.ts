@@ -1,6 +1,7 @@
 import BaseUI, { EnumUIPath } from "../Utils/UIKiller/BaseUI";
 import Sequence from "../Utils/Action/Sequence";
 import { TipMgr } from "../Manage/TipManager";
+import { ListenerMgr } from "../Manage/ListenerManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -24,13 +25,17 @@ export default class Helloworld extends BaseUI {
         testMap.forEach((value, key) => {
             TipMgr.Instance().create(`value=${value},key=${key}`);
         });
+
     }
 
     onEnable() {
+        super.onEnable();
         console.log('onEnable helloworld');
     }
 
     registerEvent() {
-        console.log("Hello world");
+        ListenerMgr.Instance().on('test', this, (data) => {
+            console.log('test', data, this);
+        });
     }
 }

@@ -31,9 +31,6 @@ export class ListenerMgr {
     private mListenerMap = new Map<string, Map<any, Delegate[]>>();
 
     public static Instance(): ListenerMgr {
-        // if (this.instance == null) {
-        //     this.instance = new ListenerMgr();
-        // }
         return this.instance;
     }
 
@@ -164,7 +161,7 @@ export class ListenerMgr {
             listenerMap = this.mListenerMap.get(type);
         } else {
             listenerMap = new Map<any, Delegate[]>();
-            this.mListenerMap.set(listenerMap);
+            this.mListenerMap.set(type, listenerMap);
         }
 
         let listenerList: Delegate[];
