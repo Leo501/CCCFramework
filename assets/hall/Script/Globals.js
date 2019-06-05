@@ -1,3 +1,3 @@
 
-// window.Promise = require("es6-promise");
 window.KBEngine = require('kbengine');
+window.fetch = require('fetch');
