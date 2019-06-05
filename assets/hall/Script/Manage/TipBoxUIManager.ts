@@ -6,20 +6,21 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class TipBoxMgr {
 
-    private static instance: TipBoxMgr = null;
+    private static instance: TipBoxMgr = new TipBoxMgr();
     private pool: cc.NodePool = null;
     private prefab: cc.Prefab = null;
     private name: string = "TipBoxUI";
     private queue: Array<any> = [];
 
     public static Instance(): TipBoxMgr {
-        if (this.instance == null) {
-            this.instance = new TipBoxMgr();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new TipBoxMgr();
+        // }
         return this.instance;
     }
 
     constructor() {
+        console.log('TipBoxMgr');
         this.pool = new cc.NodePool(this.name);
     }
 

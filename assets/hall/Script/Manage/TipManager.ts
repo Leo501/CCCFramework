@@ -3,7 +3,7 @@ import TipUI from "../UI/Common/TipUI";
 
 export class TipMgr {
 
-    private static instance: TipMgr = null;
+    private static instance: TipMgr = new TipMgr();
     private pool: cc.NodePool = null;
     private prefab: cc.Prefab = null;
     private prefabPath: string = "";
@@ -11,9 +11,9 @@ export class TipMgr {
     private queue: Array<string> = [];
 
     public static Instance(): TipMgr {
-        if (this.instance == null) {
-            this.instance = new TipMgr();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new TipMgr();
+        // }
         return this.instance;
     }
 

@@ -26,14 +26,14 @@ export class Delegate {
 
 export class ListenerMgr {
 
-    private static instance: ListenerMgr;
+    private static instance: ListenerMgr = new ListenerMgr();
 
     private mListenerMap = new Map<string, Map<any, Delegate[]>>();
 
     public static Instance(): ListenerMgr {
-        if (this.instance == null) {
-            this.instance = new ListenerMgr();
-        }
+        // if (this.instance == null) {
+        //     this.instance = new ListenerMgr();
+        // }
         return this.instance;
     }
 
