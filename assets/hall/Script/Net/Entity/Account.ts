@@ -12,8 +12,6 @@ KBEngine.Account = KBEngine.Entity.extend({
      */
     onDisableAccountRes(msg) {
         console.log('onDisableAccountRes');
-        // cc.emitter.emit('Game_onDisableAccount_push');
-        cc.emitter.emit('kb_login_failed_push', `该账号已被封停\n如有疑问请联系客服咨询\n客服电话:${myG.model.playerData.kefu}`);
         //关闭连接
         KBEngine.app.onclose();
     },
@@ -35,8 +33,7 @@ KBEngine.Account = KBEngine.Entity.extend({
         let oldToken = cc.sys.localStorage.getItem('wxToken');
         console.log('onRefreshTokenRes oldToken=', oldToken);
         if (token != oldToken) {
-            cc.sys.localStorage.setItem('wxToken', token);
-            console.log('set token');
+             console.log('set token');
         }
     }
 
