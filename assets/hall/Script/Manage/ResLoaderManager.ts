@@ -5,6 +5,13 @@ interface LoadResInfo {
     deps: Array<string>
 }
 
+/**
+ * 添加一个内存管理的类，实现原理是使用引用计数
+ * 把资源分组  default/场景/手动加载(如常用Prefab)
+ * 以组为单位，把依赖的资源引用加1
+ * 释放某一组时，把当组资源从_resDependKeys中减1。
+ * 当key对应为时，放到回收数组。从而释放。
+ */
 export default class ResLoaderMgr {
 
     //资源引用计数
