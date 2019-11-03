@@ -19,9 +19,14 @@ export default class VersionInfo {
         return this.patchPath;
     }
 
-    public saveUpdateVersion(updateVersion) {
+    public saveVersion(updateVersion) {
         let key = 'CurrentVersion_' + this.gameName;
         cc.sys.localStorage.setItem(key, updateVersion);
+    }
+
+    public parseVersion() {
+        let key = 'CurrentVersion_' + this.gameName;
+        cc.sys.localStorage.getItem(key);
     }
 
     /**
@@ -30,7 +35,7 @@ export default class VersionInfo {
      * @param versionA 
      * @param versionB 
      */
-    public compareVersion(versionA, versionB) {
+    public static compareVersion(versionA, versionB) {
         var vA = versionA.split('.');
         var vB = versionB.split('.');
         for (var i = 0; i < vA.length; ++i) {
