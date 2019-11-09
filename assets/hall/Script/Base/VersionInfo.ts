@@ -19,6 +19,10 @@ export default class VersionInfo {
         return this.patchPath;
     }
 
+    public getTempPatchPath(): string {
+        return this.patchPath + '_temp';
+    }
+
     public saveVersion(updateVersion) {
         let key = 'CurrentVersion_' + this.gameName;
         cc.sys.localStorage.setItem(key, updateVersion);
