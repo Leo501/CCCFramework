@@ -150,6 +150,7 @@ export class UpdateManager {
 
     public clear() {
         this._am.setEventCallback(null);
+        this._am = null;
     }
 
 }
@@ -175,6 +176,14 @@ export default class HotUpdateMgr {
             let updateManager = new UpdateManager(name, restart);
             this.amMap.set(name, updateManager);
             return updateManager;
+        }
+    }
+
+    public clearAssetsManagerByName(name) {
+        if (this.amMap.has(name)) {
+            let updateMgr: UpdateManager = this.amMap.get(name);
+            updateMgr.clear();
+            this.amMap.delete(name);
         }
     }
 }

@@ -1,4 +1,4 @@
-
+import GameConfig from "../GameGonfig";
 
 /**
  * 返回是否合法
@@ -46,6 +46,13 @@ function setThen(fetch, success, error) {
     }
 }
 
+export interface ReqOption {
+    url: string,
+    path: string,
+    type: string,//GET POST
+    data: object,//params
+}
+
 export class HttpMgr {
     private static instance: HttpMgr = new HttpMgr();
 
@@ -64,9 +71,9 @@ export class HttpMgr {
         let path = option['path'];
         let data = option['data'] || {};
         let type = option['type'] || 'GET';
-        let url = option['url'] || myG.http_ip;
-        let onSuccess = option['success'];
-        let onError = option['error'];
+        let url = option['url'] || GameConfig.getWebUrl();
+        let onSuccess = option['success'] || ((data) => { console.log('receive data', data) });
+        let onError = option['error'] || ((data) => { console.log('err data', data) });
 
         if (type == 'GET') {
             let sendtext = '?';
@@ -97,7 +104,7 @@ export class HttpMgr {
      * @param {*} onError 
     //  * @param {*} onTimeout 
      */
-    request(opt, onSuccess, onError, isLoading?) {
+    request(opt: ReqOption, onSuccess: Function, onError: Function, isLoading?) {
 
         let loading = null;
         //显示等待

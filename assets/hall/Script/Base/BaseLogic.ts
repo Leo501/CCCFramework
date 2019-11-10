@@ -1,5 +1,5 @@
 import GameConfig from "../GameGonfig";
-import { ListenerMgr } from "../Manage/ListenerManager";
+import UpdateLogic from "./UpdateLogic";
 
 export default class BaseLogic {
 
@@ -14,7 +14,7 @@ export default class BaseLogic {
 
     //1 为进行热更新 2。登陆 3。进入大厅
     private mainState: number = 0;
-
+    private updateLogic: UpdateLogic;
     constructor() {
 
     }
@@ -27,13 +27,31 @@ export default class BaseLogic {
         }
     }
 
+
     public initGame() {
 
     }
 
+    //进行更新检测
     public startCheck() {
-        //
-        ListenerMgr.Instance().emit('UI_check_update_push');
+        this.updateLogic = new UpdateLogic();
+        this.updateLogic.onFinish = this.onCheckoutUpdateFinish.bind(this);
+        this.updateLogic.startUpdate('Lobby');
+    }
+
+    //进入登陆页面
+    public startLogin() {
+
+    }
+
+    //开始进入大厅
+    public startLobby() {
+
+    }
+
+    private onCheckoutUpdateFinish() {
+        this.mainState = 2;
+        this.startLogin();
     }
 
 }
