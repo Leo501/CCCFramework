@@ -5,10 +5,11 @@ export class GameInfoModel {
     private static instance: GameInfoModel = null;
 
     private _curGame: string;
-
+    private roomGameID: number;
     constructor() {
         console.log('hello GameInfoModel');
-        this.curGame = "hall";
+        this.curGame = "Lobby";
+        this.roomGameID = 1;
     }
 
     public static Instance() {
@@ -24,5 +25,13 @@ export class GameInfoModel {
 
     public set curGame(game) {
         this._curGame = game;
+    }
+
+    public getRoomGameID() {
+        return this.roomGameID;
+    }
+
+    public setRoomGameID(gameID) {
+        this.roomGameID = gameID;
     }
 }

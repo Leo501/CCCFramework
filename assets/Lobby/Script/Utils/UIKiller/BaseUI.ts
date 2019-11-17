@@ -1,4 +1,3 @@
-import { ConstValue } from "../../Data/ConstValue";
 
 const { ccclass, property } = cc._decorator;
 

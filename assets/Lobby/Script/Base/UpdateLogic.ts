@@ -23,9 +23,9 @@ export default class UpdateLogic {
         this.requestUpdateUrl(this.gameName);
     }
 
+    //从网络中取得更新url
     private requestUpdateUrl(gameName) {
         ListenerMgr.Instance().emit('update_check_version_push');
-        //从网络中取得更新url
         let opt: ReqOption = {};
         HttpMgr.Instance().request(opt, this.onReqUpdateUrlSuccess.bind(this), this.onReqUpdateUrlFail.bind(this));
 
@@ -61,6 +61,9 @@ export default class UpdateLogic {
         }
     }
 
+    /**
+     * 下载进度
+     */
     private startDownload() {
         this.updteMgr.onProgress = (fileProgress, byteProgress) => {
             ListenerMgr.Instance().emit('update_start_version_progress_push', fileProgress, byteProgress);

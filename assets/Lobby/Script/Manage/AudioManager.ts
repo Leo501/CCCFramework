@@ -1,5 +1,5 @@
-import { ConstValue } from "../Data/ConstValue";
 import { GameInfoModel } from "../Data/GameInfoModel";
+import { ConstValue } from "../Base/ConstValue";
 
 export class AudioMgr {
     private static instance: AudioMgr = new AudioMgr();

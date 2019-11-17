@@ -1,6 +1,6 @@
 import { AudioMgr } from "../../Manage/AudioManager";
-import { ConstValue } from "../../Data/ConstValue";
 import { UIComponent } from "./UIComponent";
+import { ConstValue } from "../../Base/ConstValue";
 
 const UIKillerTouchSound = {
     name: 'UIKillerTouchSound',
