@@ -1,5 +1,5 @@
 import { resGetPrefab } from "./ResManager";
-import LoadingUI from "../UI/Common/LoadingUI";
+import LoadingUI from "../UI/BaseUI/LoadingUI";
 
 const { ccclass, property } = cc._decorator;
 

@@ -27,7 +27,9 @@ export default class UpdateLogic {
         ListenerMgr.Instance().emit('update_check_version_push');
         //从网络中取得更新url
         let opt: ReqOption = {};
-        HttpMgr.Instance().request(opt, this.onReqUpdateUrlSuccess.bind(this), this.onReqUpdateUrlFail.bind(this));
+        HttpMgr.Instance().request(opt)
+            .then(this.onReqUpdateUrlSuccess.bind(this))
+            .catch(this.onReqUpdateUrlFail.bind(this));
 
     }
 

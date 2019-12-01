@@ -12,18 +12,6 @@ export default class NewClass extends BaseUI {
         ListenerMgr.Instance().offAll(this);
         ListenerMgr.Instance().emit('test', 1);
 
-        let opt = {
-            path: '/urlInfo.json',
-            type: 'GET',
-            url: "---"
-        };
-        HttpMgr.Instance().request(opt, (data) => {
-            console.log('success', data);
-            console.log(data.packageUrl);
-        }, (err) => {
-            console.log('error');
-        });
-
     }
 
     registerEvent() {
