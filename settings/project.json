@@ -24,5 +24,16 @@
   },
   "start-scene": "current",
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "last-module-event-record-time": 0,
+  "facebook": {
+    "enable": false,
+    "appID": "",
+    "live": {
+      "enable": false
+    },
+    "audience": {
+      "enable": false
+    }
+  }
 }

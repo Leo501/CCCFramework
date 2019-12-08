@@ -105,13 +105,13 @@ export class HttpMgr {
 
     public request(opt: ReqOption): Promise<any> {
         return new Promise((resolve: Function, reject: Function) => {
-            let tryTime = 3, reciveTime = 0;
+            let tryTime = 3;
             opt.success = (data) => {
-                if (reciveTime++ > 1) return;
+                clearInterval(intervalId);
                 resolve(data);
             }
             opt.error = (data) => {
-                if (reciveTime++ > 1) return;
+                clearInterval(intervalId);
                 reject(data);
             }
             let intervalId = this.createTimeout(() => {

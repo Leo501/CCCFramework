@@ -1,9 +1,10 @@
 {
-  "ver": "1.0.0",
+  "ver": "2.2.0",
   "uuid": "1841ea85-4034-4682-9caa-3e93b0bbd719",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
+  "premultiplyAlpha": false,
   "subMetas": {
     "pub_btn_bg_bighuang": {
       "ver": "1.0.3",
