@@ -1,0 +1,12 @@
+{
+    "type": 1,
+    "version": "1.0.1",
+    "packageUrl": "http://192.168.11.82/hotUpdate/",
+    "root": "../build/jsb-link/",
+    "src": "../build/jsb-link/",
+    "hotUpdateDirName": "hotUpdateFiles",
+    "hotupdateDirExport": "exportHotUpdate",
+    "zipDir": [
+        "/res/import"
+    ]
+}
