@@ -69,7 +69,7 @@ export class ListenerMgr {
         let length = delegateList.length;
         for (let idx = 0; idx < length; idx++) {
             let delegate: Delegate = delegateList[idx];
-            delegate.listener.call(callerList, ...delegate.argArray, ...argArray);
+            delegate.listener.call(callerList[idx], ...delegate.argArray, ...argArray);
         }
         return true;
     }
