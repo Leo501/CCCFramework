@@ -1,5 +1,5 @@
 import { resGetPrefab } from "./ResManager";
-import { TipBoxUI, TipBoxData } from "../UI/Common/TipBoxUI";
+import { TipBoxUI, TipBoxData } from "../UI/BaseUI/TipBoxUI";
 
 const { ccclass, property } = cc._decorator;
 

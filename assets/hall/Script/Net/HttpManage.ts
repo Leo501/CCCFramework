@@ -1,72 +1,86 @@
+import GameConfig from "../GameGonfig";
+import fetch = require('fetch');
+export interface ReqOption {
+    url: string,
+    path: string,
+    type: string,//GET POST
+    data: object,//params
 
+    success: Function,
+    error: Function
 
-/**
- * 返回是否合法
- * @param {*} response 
- */
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response;
-    } else {
-        var error = new Error(response.statusText);
-        error.response = response;
-        // console.log();
-        throw error;
-    }
 }
 
 /**
- * 返回一个Json数据
- * @param {*} response 
+ * 使用Fecth来进行http通信
+ * Fetch 文档 https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch
  */
-function parseJSON(response) {
-    return response.json();
-}
-
-/**
- * 设置Then
- * @param {*} fetch 
- * @param {*} handler 
- */
-function setThen(fetch, success, error) {
-
-    try {
-        fetch.then(checkStatus)
-            .then(parseJSON)
-            .then(function (json) {
-                // console.log('parsed json', json);
-                if (success) success(json);
-            }).catch(function (ex) {
-                // console.log('parsing failed', ex);
-                if (error) error(ex);
-            });
-    } catch (err) {
-        console.log('setThen error=', err);
-        if (error) error(err);
-    }
-}
-
 export class HttpMgr {
     private static instance: HttpMgr = new HttpMgr();
 
     public static Instance() {
-        // if (this.instance == null) {
-        //     this.instance = new HttpMgr();
-        // }
         return this.instance;
+    }
+
+    private defaultUrl: string;
+
+    constructor() {
+        this.defaultUrl = GameConfig.getWebUrl();
+    }
+
+    /**
+     * 返回是否合法
+     * @param {*} response 
+     */
+    private checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response;
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            // console.log();
+            throw error;
+        }
+    }
+
+    /**
+     * 返回一个Json数据
+     * @param {*} response 
+     */
+    private parseJSON(response) {
+        return response.json();
+    }
+
+    /**
+     * 设置Then
+     * @param {*} fetch 
+     * @param {*} handler 
+     */
+    private setThen(fetch, success, error) {
+        try {
+            fetch.then(this.checkStatus)
+                .then(this.parseJSON)
+                .then(function (json) {
+                    success && success(json);
+                }).catch(function (ex) {
+                    error && error(ex);
+                });
+        } catch (err) {
+            console.log('setThen error=', err);
+            if (error) error(err);
+        }
     }
 
     /**
      * 发送http命令
      */
     private sendRequest(option = {}) {
-        // console.log('http =', option);
         let path = option['path'];
         let data = option['data'] || {};
         let type = option['type'] || 'GET';
-        let url = option['url'] || myG.http_ip;
-        let onSuccess = option['success'];
-        let onError = option['error'];
+        let url = option['url'] || this.defaultUrl;
+        let onSuccess = option['success'] || ((data) => { console.log('receive data', data) });
+        let onError = option['error'] || ((data) => { console.log('err data', data) });
 
         if (type == 'GET') {
             let sendtext = '?';
@@ -77,10 +91,9 @@ export class HttpMgr {
                 sendtext += (k + '=' + data[k]);
             }
             let requestURL = url + path + encodeURI(sendtext);
-            console.log('requestURL=', requestURL);
-            setThen(fetch(requestURL), onSuccess, onError);
+            this.setThen(fetch(requestURL), onSuccess, onError);
         } else if (type == 'POST') {
-            setThen(fetch(url + path, {
+            this.setThen(fetch(url + path, {
                 method: type,
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,72 +103,32 @@ export class HttpMgr {
         }
     }
 
-    /**
-     * 
-     * @param {*} opt 
-     * @param {*} onSuccess 
-     * @param {*} onError 
-    //  * @param {*} onTimeout 
-     */
-    request(opt, onSuccess, onError, isLoading?) {
-
-        let loading = null;
-        //显示等待
-        if (isLoading) {
-            // loading = myG.ui.loadingAnim({
-            //     msg: '请求中...'
-            // });
-        }
-        //重连次数
-        let tryTime = 0;
-        //是否已收到结果，用于发送两次，收到两次的情况
-        let isReci = false;
-        let getAuthCb = function (data) {
-            // console.log(this, data);
-            if (isReci) return;
-            isReci = true;
-            if (isLoading) {
-                loading && loading.script.close();
-            }
-            if (onSuccess) onSuccess(data);
-        };
-        let getAuthErrCb = function (data) {
-            // console.log(this, data);
-            if (isReci) return;
-            isReci = true;
-            if (isLoading) {
-                loading && loading.script.close();
-            }
-            if (onError) onError(data);
-        };
-        opt.success = getAuthCb;
-        opt.error = getAuthErrCb;
-
-        let intervalId = 0;
-        let retryFunc = function () {
-            if (isReci) {
-                if (intervalId) {
-                    clearInterval(intervalId);
-                    intervalId = 0;
-                }
-                return;
-            }
-            if (++tryTime >= 2) {
-                isReci = true;
-                if (isLoading) {
-                    loading && loading.script.close();
-                }
-                if (onError) onError('time out');
+    public request(opt: ReqOption): Promise<any> {
+        return new Promise((resolve: Function, reject: Function) => {
+            let tryTime = 3;
+            opt.success = (data) => {
                 clearInterval(intervalId);
-                intervalId = 0;
-                return;
+                resolve(data);
             }
+            opt.error = (data) => {
+                clearInterval(intervalId);
+                reject(data);
+            }
+            let intervalId = this.createTimeout(() => {
+                if (tryTime-- == 0) {
+                    clearInterval(intervalId);
+                }
+                this.sendRequest(opt);
+            });
             this.sendRequest(opt);
-        }.bind(this);
-        this.sendRequest(opt);
-        intervalId = setInterval(() => {
-            retryFunc();
-        }, 7000);
+
+        });
+    }
+
+    private createTimeout(fn: Function, time: number = 8000): number {
+        return setInterval(() => {
+            fn && fn();
+        }, time);
     }
 
 }

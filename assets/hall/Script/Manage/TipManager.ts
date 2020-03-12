@@ -1,5 +1,5 @@
 import { resGetPrefab } from "./ResManager";
-import TipUI from "../UI/Common/TipUI";
+import TipUI from "../UI/BaseUI/TipUI";
 
 export class TipMgr {
 
