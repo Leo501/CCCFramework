@@ -1,6 +1,10 @@
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
 import { EnumUIPath, UIShowType } from "../../Utils/UIKiller/BaseUI";
 import { UIMgr } from "../../Manage/UIManager";
+<<<<<<< HEAD:assets/Lobby/Script/UI/Login/LoginUI.ts
+=======
+import { TipBoxUI } from "../BaseUI/TipBoxUI";
+>>>>>>> a99aaf1cb52baef12c89addb413ebe05514ec4d5:assets/hall/Script/UI/Login/LoginUI.ts
 import LoadingMgr from "../../Manage/LoadingManager";
 import Sequence from "../../Utils/Action/Sequence";
 import { TipBoxUI } from "../BaseUI/TipBoxUI";

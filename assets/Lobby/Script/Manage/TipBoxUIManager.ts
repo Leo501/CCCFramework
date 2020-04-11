@@ -1,5 +1,5 @@
 import { resGetPrefab } from "./ResManager";
-import { TipBoxData, TipBoxUI } from "../UI/BaseUI/TipBoxUI";
+import { TipBoxUI, TipBoxData } from "../UI/BaseUI/TipBoxUI";
 
 export default class TipBoxMgr {
 

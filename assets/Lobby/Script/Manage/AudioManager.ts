@@ -12,6 +12,8 @@ export class AudioMgr {
 
     private _soundVolume: number = 0.5;
 
+    private _root: string = '';
+
     public static Instance(): AudioMgr {
         // if (this.instance == null) {
         //     this.instance = new AudioMgr();
@@ -29,6 +31,8 @@ export class AudioMgr {
 
         this._mgmVolume = cc.sys.localStorage.getItem('bgmVolume') || this._mgmVolume;
         this._soundVolume = cc.sys.localStorage.getItem('soundVolume') || this._soundVolume;
+
+        this._root = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR;
 
         cc.audioEngine.setMusicVolume(this._mgmVolume);
         cc.audioEngine.setEffectsVolume(this._soundVolume);
@@ -72,7 +76,7 @@ export class AudioMgr {
 
         this.sound = soundName;
 
-        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + soundName;
+        let path = this._root + soundName;
 
         cc.loader.loadRes(path, cc.AudioClip, (err, clip) => {
             if (err) {
@@ -93,7 +97,7 @@ export class AudioMgr {
 
         this.bgm = soundName;
 
-        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + soundName;
+        let path = this._root + soundName;
 
         cc.audioEngine.stopMusic();
 
@@ -108,7 +112,7 @@ export class AudioMgr {
 
     public resumeBGM() {
         cc.audioEngine.stopMusic();
-        let path = GameInfoModel.Instance().curGame + "/" + ConstValue.AUDIO_DIR + this.bgm;
+        let path = this._root + this.bgm;
         cc.loader.loadRes(path, cc.AudioClip, (err, clip) => {
             if (err) {
                 cc.error(err);
