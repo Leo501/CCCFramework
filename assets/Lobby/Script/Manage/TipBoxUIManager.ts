@@ -1,9 +1,6 @@
 import { resGetPrefab } from "./ResManager";
-import { TipBoxUI, TipBoxData } from "../UI/Common/TipBoxUI";
+import { TipBoxData, TipBoxUI } from "../UI/BaseUI/TipBoxUI";
 
-const { ccclass, property } = cc._decorator;
-
-@ccclass
 export default class TipBoxMgr {
 
     private static instance: TipBoxMgr = new TipBoxMgr();

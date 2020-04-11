@@ -1,9 +1,6 @@
 import { resGetPrefab } from "./ResManager";
-import LoadingUI from "../UI/Common/LoadingUI";
+import LoadingUI from "../UI/BaseUI/LoadingUI";
 
-const { ccclass, property } = cc._decorator;
-
-@ccclass
 export default class LoadingMgr {
 
     private static instance: LoadingMgr = new LoadingMgr();
@@ -23,7 +20,6 @@ export default class LoadingMgr {
     }
 
     public async create() {
-        console.log('TipMgr');
         if (this.prefab == null) {
             this.prefab = await resGetPrefab(LoadingUI.getUrl());
         }

@@ -27,8 +27,9 @@ export default class UpdateLogic {
     private requestUpdateUrl(gameName) {
         ListenerMgr.Instance().emit('update_check_version_push');
         let opt: ReqOption = {};
-        HttpMgr.Instance().request(opt, this.onReqUpdateUrlSuccess.bind(this), this.onReqUpdateUrlFail.bind(this));
-
+        HttpMgr.Instance().request(opt)
+            .then(this.onReqUpdateUrlSuccess.bind(this))
+            .catch(this.onReqUpdateUrlFail.bind(this));
     }
 
     private onReqUpdateUrlFail(err) {

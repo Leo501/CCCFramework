@@ -1,9 +1,9 @@
 import { UIComponent } from "../../Utils/UIKiller/UIComponent";
 import { EnumUIPath, UIShowType } from "../../Utils/UIKiller/BaseUI";
 import { UIMgr } from "../../Manage/UIManager";
-import { TipBoxUI } from "../Common/TipBoxUI";
 import LoadingMgr from "../../Manage/LoadingManager";
 import Sequence from "../../Utils/Action/Sequence";
+import { TipBoxUI } from "../BaseUI/TipBoxUI";
 
 const { ccclass, property } = cc._decorator;
 
