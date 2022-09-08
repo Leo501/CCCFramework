@@ -6,7 +6,7 @@
   "dependencies": {
     "eslint": "^5.12.1",
     "fs-jetpack": "^2.2.3",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "mobx": "^5.1.0"
   }
 }
